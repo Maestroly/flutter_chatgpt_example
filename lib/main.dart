@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'constant.dart';
 import 'model.dart';
 
 void main() {
@@ -13,8 +14,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ChatPage(),
+    return MaterialApp(
+      theme: ThemeData(fontFamily: 'Montserrat'),
+      home: const ChatPage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -36,10 +38,7 @@ Future<String> generateResponse(String prompt) async {
   var url = Uri.https("api.openai.com", "/v1/completions");
   final response = await http.post(
     url,
-    headers: {
-      'Content-Type': 'application/json',
-      "Authorization": "Bearer $apiKey"
-    },
+    headers: {'Content-Type': 'application/json', "Authorization": "Bearer $apiKey"},
     body: json.encode({
       "model": "text-davinci-003",
       "prompt": prompt,
@@ -77,7 +76,10 @@ class _ChatPageState extends State<ChatPage> {
         title: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text(
-            "OpenAI's ChatGPT Flutter Example \n@ngjunya",
+            "Azərişığın Chatbotuna xoş gəlmisiniz!",
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+            ),
             maxLines: 2,
             textAlign: TextAlign.center,
           ),
@@ -139,8 +141,7 @@ class _ChatPageState extends State<ChatPage> {
             );
             var input = _textController.text;
             _textController.clear();
-            Future.delayed(const Duration(milliseconds: 50))
-                .then((_) => _scrollDown());
+            Future.delayed(const Duration(milliseconds: 50)).then((_) => _scrollDown());
             generateResponse(input).then((value) {
               setState(() {
                 isLoading = false;
@@ -153,8 +154,7 @@ class _ChatPageState extends State<ChatPage> {
               });
             });
             _textController.clear();
-            Future.delayed(const Duration(milliseconds: 50))
-                .then((_) => _scrollDown());
+            Future.delayed(const Duration(milliseconds: 50)).then((_) => _scrollDown());
           },
         ),
       ),
@@ -204,8 +204,7 @@ class _ChatPageState extends State<ChatPage> {
 }
 
 class ChatMessageWidget extends StatelessWidget {
-  const ChatMessageWidget(
-      {super.key, required this.text, required this.chatMessageType});
+  const ChatMessageWidget({super.key, required this.text, required this.chatMessageType});
 
   final String text;
   final ChatMessageType chatMessageType;
@@ -215,9 +214,7 @@ class ChatMessageWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       padding: const EdgeInsets.all(16),
-      color: chatMessageType == ChatMessageType.bot
-          ? botBackgroundColor
-          : backgroundColor,
+      color: chatMessageType == ChatMessageType.bot ? botBackgroundColor : backgroundColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -228,8 +225,8 @@ class ChatMessageWidget extends StatelessWidget {
                     backgroundColor: const Color.fromRGBO(16, 163, 127, 1),
                     child: Image.asset(
                       'assets/bot.png',
-                      color: Colors.white,
-                      scale: 1.5,
+                      width: 40,
+                      height: 40,
                     ),
                   ),
                 )
@@ -252,10 +249,7 @@ class ChatMessageWidget extends StatelessWidget {
                   ),
                   child: Text(
                     text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
                   ),
                 ),
               ],
